@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+  functions = "netlify/functions"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Uncomment and customize the following if you use environment-specific redirects
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200

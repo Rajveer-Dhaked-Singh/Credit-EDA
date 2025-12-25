@@ -1,0 +1,29 @@
+name: Netlify Deploy (optional)
+
+on:
+  push:
+    branches: [ main, master, feature/website-tailwind-accessibility ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    name: Build and (optional) Deploy to Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+
+      # Optional Netlify CLI deploy (requires NETLIFY_AUTH_TOKEN & NETLIFY_SITE_ID secrets)
+      - name: Netlify Deploy (optional)
+        if: ${{ secrets.NETLIFY_AUTH_TOKEN && secrets.NETLIFY_SITE_ID }}
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=. --prod --site-id ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }}
